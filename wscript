@@ -13,7 +13,7 @@ def configure(conf):
 def build(bld):
     bld.recurse('jni')
 
-    bld(rule = 'wget http://download.forge.ow2.org/sat4j/${TGT}',
+    bld(rule = 'wget http://dllegacy.ow2.org/sat4j/${TGT}',
         target = 'sat4j-core-v20130525.zip')
     bld(rule = 'unzip ${SRC} -x *src.jar',
         source = 'sat4j-core-v20130525.zip',
@@ -50,12 +50,15 @@ def distclean(ctx):
 
 
 from waflib.Build import BuildContext
-class TestContext(BuildContext):
-        cmd = 'test'
-        fun = 'test'
-                
-def test(bld):
-    """compiles and runs tests"""
+class BuildTestContext(BuildContext):
+        cmd = 'buildtest'
+        fun = 'buildtest'
+class RunTestContext(BuildContext):
+        cmd = 'runtest'
+        fun = 'runtest'
+
+def buildtest(bld):
+    """compiles tests"""
 
     bld(rule = 'wget -O junit.jar "http://search.maven.org/remotecontent?filepath=junit/junit/4.12/junit-4.12.jar"',
         target = 'junit.jar')
@@ -69,13 +72,13 @@ def test(bld):
         srcdir    = 'test',
         classpath = cp, 
         use       = ['kodkod', 'examples'])
-    bld.add_group()
 
+def runtest(bld):
+    """runs tests"""
+
+    cp = ['.', 'kodkod.jar', 'examples.jar', 'org.sat4j.core.jar', 'junit.jar', 'hamcrest-core.jar']
     bld(rule = 'java -cp {classpath} -Djava.library.path={libpath} {junit} {test}'.format(classpath = ':'.join(cp),
                                                                                           libpath = bld.env.LIBDIR,
                                                                                           junit = 'org.junit.runner.JUnitCore',
                                                                                           test = 'kodkod.test.AllTests'),
         always = True) 
-
-
-        
