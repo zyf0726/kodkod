@@ -1,7 +1,7 @@
 #include <jni.h>
 
 #include "kodkod_engine_satlab_Glucose.h"
-#include "glucose-syrup/core/Solver.h"
+#include "glucose/core/Solver.h"
 #include <iostream>
 #include <cstdlib>
 #include <cstdio>

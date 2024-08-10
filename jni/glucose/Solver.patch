@@ -1,9 +1,9 @@
---- glucose-syrup/core/Solver.cc	2014-10-03 02:10:21.000000000 -0700
-+++ Solver.cc	2015-09-15 12:24:35.000000000 -0700
-@@ -1405,7 +1405,7 @@
+--- glucose/core/Solver.cc	2024-08-11 00:52:43.490483402 +0800
++++ Solver.cc	2024-08-11 01:06:38.710493099 +0800
+@@ -1616,7 +1616,7 @@
                  decisions++;
                  next = pickBranchLit();
-                 if (next == lit_Undef) {
+                 if(next == lit_Undef) {
 -                    printf("c last restart ## conflicts  :  %d %d \n", conflictC, decisionLevel());
 +                    // printf("c last restart ## conflicts  :  %d %d \n", conflictC, decisionLevel());
                      // Model found:
