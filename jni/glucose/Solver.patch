@@ -1,11 +1,78 @@
---- glucose/core/Solver.cc	2024-08-11 00:52:43.490483402 +0800
-+++ Solver.cc	2024-08-11 01:06:38.710493099 +0800
+--- glucose/core/Solver.cc	2024-08-11 03:35:45.190483483 +0800
++++ Solver.cc	2024-08-11 03:46:06.860478347 +0800
+@@ -1317,8 +1317,8 @@
+ void Solver::adaptSolver() {
+     bool adjusted = false;
+     bool reinit = false;
+-    printf("c\nc Try to adapt solver strategies\nc \n");
+-      printf("c Adjusting solver for the SAT Race 2015 (alpha feature)\n");
++    //printf("c\nc Try to adapt solver strategies\nc \n");
++      //printf("c Adjusting solver for the SAT Race 2015 (alpha feature)\n");
+     /*printf("c key successive Conflicts       : %" PRIu64"\n",stats[noDecisionConflict]);
+     printf("c nb unary clauses learnt        : %" PRIu64"\n",stats[nbUn]);
+     printf("c key avg dec per conflicts      : %.2f\n", (float)decisions / (float)conflicts);
+@@ -1329,7 +1329,7 @@
+         coLBDBound = 4;
+         glureduce = true;
+         adjusted = true;
+-        printf("c Adjusting for low decision levels.\n");
++        //printf("c Adjusting for low decision levels.\n");
+         reinit = true;
+         firstReduceDB = 2000;
+         nbclausesbeforereduce = firstReduceDB;
+@@ -1343,10 +1343,10 @@
+         var_decay = 0.999;
+         max_var_decay = 0.999;
+         adjusted = true;
+-        printf("c Adjusting for low successive conflicts.\n");
++        //printf("c Adjusting for low successive conflicts.\n");
+     }
+     if(stats[noDecisionConflict] > 54400) {
+-        printf("c Adjusting for high successive conflicts.\n");
++        //printf("c Adjusting for high successive conflicts.\n");
+         chanseokStrategy = true;
+         glureduce = true;
+         coLBDBound = 3;
+@@ -1360,12 +1360,12 @@
+         var_decay = 0.91;
+         max_var_decay = 0.91;
+         adjusted = true;
+-        printf("c Adjusting for a very large number of true glue clauses found.\n");
++        //printf("c Adjusting for a very large number of true glue clauses found.\n");
+     }
+     if(!adjusted) {
+-        printf("c Nothing extreme in this problem, continue with glucose default strategies.\n");
++        //printf("c Nothing extreme in this problem, continue with glucose default strategies.\n");
+     }
+-    printf("c\n");
++    //printf("c\n");
+     if(adjusted) { // Let's reinitialize the glucose restart strategy counters
+         lbdQueue.fastclear();
+         sumLBD = 0;
+@@ -1386,7 +1386,7 @@
+             }
+         }
+         learnts.shrink(i - j);
+-        printf("c Activating Chanseok Strategy: moved %d clauses to the permanent set.\n", moved);
++        //printf("c Activating Chanseok Strategy: moved %d clauses to the permanent set.\n", moved);
+     }
+ 
+     if(reinit) {
+@@ -1405,7 +1405,7 @@
+ }
+ printf("c reinitialization of all variables activity/phase/learnt clauses.\n");
+ */
+-        printf("c Removing of non permanent clauses.\n");
++        //printf("c Removing of non permanent clauses.\n");
+     }
+ 
+ }
 @@ -1616,7 +1616,7 @@
                  decisions++;
                  next = pickBranchLit();
                  if(next == lit_Undef) {
 -                    printf("c last restart ## conflicts  :  %d %d \n", conflictC, decisionLevel());
-+                    // printf("c last restart ## conflicts  :  %d %d \n", conflictC, decisionLevel());
++                    //printf("c last restart ## conflicts  :  %d %d \n", conflictC, decisionLevel());
                      // Model found:
                      return l_True;
                  }
