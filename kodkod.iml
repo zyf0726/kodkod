@@ -8,11 +8,10 @@
       <excludeFolder url="file://$MODULE_DIR$/.waf3-2.1.2-5b48554f897113218781486acfe4d78e" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
       <excludeFolder url="file://$MODULE_DIR$/jni/glucose/glucose-syrup" />
-      <excludeFolder url="file://$MODULE_DIR$/jni/lingeling/code" />
+      <excludeFolder url="file://$MODULE_DIR$/jni/lingeling/lingeling" />
       <excludeFolder url="file://$MODULE_DIR$/jni/minisat/minisat" />
       <excludeFolder url="file://$MODULE_DIR$/jni/minisatp/minisatp" />
-      <excludeFolder url="file://$MODULE_DIR$/jni/plingeling/binary" />
-      <excludeFolder url="file://$MODULE_DIR$/jni/plingeling/code" />
+      <excludeFolder url="file://$MODULE_DIR$/jni/plingeling/plingeling" />
       <excludeFolder url="file://$MODULE_DIR$/lib" />
     </content>
     <orderEntry type="inheritedJdk" />
