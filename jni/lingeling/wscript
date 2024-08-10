@@ -1,9 +1,8 @@
 #! /usr/bin/env python
 # encoding: utf-8
 
-import shutil, subprocess, os
-
-LINGELING = 'lingeling-ayv-86bf266-140429'
+import shutil
+import subprocess
 
 def options(opt):
     opt.load('compiler_c')
@@ -13,17 +12,16 @@ def configure(conf):
     conf.load('compiler_c')
     conf.load('java')
     conf.check_jni_headers()
-    sourceclean(conf)
-    root = conf.path.abspath()
-    subprocess.check_call(['wget', 'http://fmv.jku.at/lingeling/' + LINGELING + '.zip', '--directory-prefix', root])
-    subprocess.check_call(['unzip', root + '/' + LINGELING + '.zip','code/*', '-d', root])
+    LINGELING = conf.path.abspath() + '/lingeling'
+    shutil.rmtree(LINGELING, True)
+    subprocess.check_call(['git', 'clone', 'https://github.com/arminbiere/lingeling.git', LINGELING])
 
 def build(bld):
-    DEFINES = ['NDBLSCR', 'NLGLOG','NDEBUG', 'NCHKSOL', 'NLGLPICOSAT', 'NLGLDRUPLIG', 'NLGLYALSAT']
+    DEFINES = ['NLGLOG', 'NDEBUG', 'NCHKSOL', 'NLGLDRUPLIG', 'NLGLYALSAT', 'LGLFILES', 'NLGLDEMA']
     CFLAGS = ['-w', '-O3', '-fPIC']
-    INCLUDES = ['.']
+    INCLUDES = ['.', './lingeling']
     
-    bld.objects(source = 'code/lglib.c',
+    bld.objects(source = ['lingeling/lglib.c', 'lingeling/lglopts.c'],
                 target = 'lglib',
                 includes = INCLUDES, cflags = CFLAGS, defines = DEFINES)
     
@@ -35,11 +33,5 @@ def build(bld):
 def distclean(ctx):
     from waflib import Scripting
     Scripting.distclean(ctx)
-    sourceclean(ctx)
+    shutil.rmtree(ctx.path.abspath() + '/lingeling', True)
 
-def sourceclean(ctx):
-    shutil.rmtree(ctx.path.abspath() + '/code', True)
-    try:
-        os.remove(ctx.path.abspath() + '/' + LINGELING + '.zip')
-    except OSError:
-        pass
