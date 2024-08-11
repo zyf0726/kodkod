@@ -13,15 +13,17 @@ def configure(conf):
 def build(bld):
     bld.recurse('jni')
 
-    bld(rule = 'wget http://dllegacy.ow2.org/sat4j/${TGT}',
-        target = 'sat4j-core-v20130525.zip')
-    bld(rule = 'unzip ${SRC} -x *src.jar',
-        source = 'sat4j-core-v20130525.zip',
-        target = 'org.sat4j.core.jar')
+    SAT4JREPO = 'https://repo1.maven.org/maven2/org/ow2/sat4j/org.ow2.sat4j.core/2.3.6/'
+    bld(rule = 'wget ' + SAT4JREPO + '${TGT}',
+        target = 'org.ow2.sat4j.core-2.3.6.jar')
+    bld(rule = 'wget ' + SAT4JREPO + '${TGT}',
+        target = 'org.ow2.sat4j.core-2.3.6-sources.jar')
+
     bld(rule = 'wget -O junit.jar "http://search.maven.org/remotecontent?filepath=junit/junit/4.12/junit-4.12.jar"',
         target = 'junit.jar')
     bld(rule = 'wget -O hamcrest-core.jar "http://search.maven.org/remotecontent?filepath=org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar"',
         target = 'hamcrest-core.jar')
+
     bld.add_group()
 
     bld(features  = 'javac jar',
@@ -29,7 +31,7 @@ def build(bld):
         srcdir    = 'src', 
         outdir    = 'kodkod',
         compat    = '1.8',
-        classpath = ['.', 'org.sat4j.core.jar'],
+        classpath = ['.', 'org.ow2.sat4j.core-2.3.6.jar'],
         manifest  = 'src/MANIFEST',
         basedir   = 'kodkod',
         destfile  = 'kodkod.jar')
@@ -61,7 +63,7 @@ class TestContext(BuildContext):
 def test(bld):
     """compiles and runs tests"""
 
-    cp = ['.', 'kodkod.jar', 'examples.jar', 'org.sat4j.core.jar', 'junit.jar', 'hamcrest-core.jar']
+    cp = ['.', 'kodkod.jar', 'examples.jar', 'org.ow2.sat4j.core-2.3.6.jar', 'junit.jar', 'hamcrest-core.jar']
     bld(features  = 'javac',
         name      = 'test',
         srcdir    = 'test',
