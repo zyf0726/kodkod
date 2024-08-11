@@ -36,6 +36,6 @@ hs_err_pid*
 
 /build/
 /lib/
-/waf-*
+#/waf-*
 /.waf*/
 .lock-waf*
