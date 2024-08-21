@@ -2,6 +2,12 @@
 # encoding: utf-8
 import os.path
 
+SAT4J      = "org.ow2.sat4j.core"
+SAT4J_VER  = "2.3.6"
+SAT4J_REPO = "https://repo1.maven.org/maven2/org/ow2/sat4j/%s/%s/" % (SAT4J, SAT4J_VER)
+SAT4J_JAR  = "%s-%s.jar" % (SAT4J, SAT4J_VER)
+SAT4J_SRC  = "%s-%s-sources.jar" % (SAT4J, SAT4J_VER)
+
 def options(opt):
     opt.load('java')
     opt.recurse('jni')
@@ -13,11 +19,10 @@ def configure(conf):
 def build(bld):
     bld.recurse('jni')
 
-    SAT4JREPO = 'https://repo1.maven.org/maven2/org/ow2/sat4j/org.ow2.sat4j.core/2.3.6/'
-    bld(rule = 'wget ' + SAT4JREPO + '${TGT}',
-        target = 'org.ow2.sat4j.core-2.3.6.jar')
-    bld(rule = 'wget ' + SAT4JREPO + '${TGT}',
-        target = 'org.ow2.sat4j.core-2.3.6-sources.jar')
+    bld(rule = 'wget ' + SAT4J_REPO + SAT4J_JAR,
+        target = SAT4J_JAR)
+    bld(rule = 'wget ' + SAT4J_REPO + SAT4J_SRC,
+        target = SAT4J_SRC)
 
     bld(rule = 'wget -O junit.jar "http://search.maven.org/remotecontent?filepath=junit/junit/4.12/junit-4.12.jar"',
         target = 'junit.jar')
@@ -31,7 +36,7 @@ def build(bld):
         srcdir    = 'src', 
         outdir    = 'kodkod',
         compat    = '1.8',
-        classpath = ['.', 'org.ow2.sat4j.core-2.3.6.jar'],
+        classpath = ['.', SAT4J_JAR],
         manifest  = 'src/MANIFEST',
         basedir   = 'kodkod',
         destfile  = 'kodkod.jar')
@@ -47,7 +52,7 @@ def build(bld):
         basedir   = 'examples',
         destfile  = 'examples.jar')
     
-    bld.install_files('${LIBDIR}', ['kodkod.jar', 'examples.jar'])
+    bld.install_files('${LIBDIR}', [SAT4J_JAR, 'kodkod.jar', 'examples.jar'])
 
 def distclean(ctx):
     from waflib import Scripting
@@ -63,10 +68,12 @@ class TestContext(BuildContext):
 def test(bld):
     """compiles and runs tests"""
 
-    cp = ['.', 'kodkod.jar', 'examples.jar', 'org.ow2.sat4j.core-2.3.6.jar', 'junit.jar', 'hamcrest-core.jar']
+    cp = ['test', SAT4J_JAR, 'kodkod.jar', 'examples.jar', 'junit.jar', 'hamcrest-core.jar']
     bld(features  = 'javac',
         name      = 'test',
         srcdir    = 'test',
+        outdir    = 'test',
+        compat    = '1.8',
         classpath = cp, 
         use       = ['kodkod', 'examples'])
     bld.add_group()
